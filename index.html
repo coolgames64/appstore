@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#6b3fa0">
+    <meta name="description" content="Get free apps!">
+    <link rel="manifest" href="manifest.json">
+    <title>Ethan's App Store</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #6b3fa0 0%, #9b59b6 100%);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(107, 63, 160, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .store-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #f39c12, #e74c3c);
+            border-radius: 18px;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+        }
+        
+        /* App List */
+        .app-list {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 25px 0 15px;
+            padding-left: 5px;
+            color: #a0a0a0;
+        }
+        
+        /* App Card */
+        .app-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .app-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .app-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 16px;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        
+        .app-icon.placeholder {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+        }
+        
+        .app-info {
+            margin-left: 15px;
+            flex: 1;
+        }
+        
+        .app-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .app-dev {
+            font-size: 13px;
+            color: #a0a0a0;
+            margin-bottom: 4px;
+        }
+        
+        .app-rating {
+            font-size: 12px;
+            color: #ffc107;
+        }
+        
+        .app-screenshot {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background: #000;
+        }
+        
+        .app-desc {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #d0d0d0;
+            margin-bottom: 15px;
+        }
+        
+        .app-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-tag {
+            background: rgba(102, 126, 234, 0.3);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            color: #a0c4ff;
+        }
+        
+        /* Add Button */
+        .add-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00f5d4, #00d4aa);
+            border: none;
+            border-radius: 14px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a2e;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 245, 212, 0.3);
+        }
+        
+        .add-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 245, 212, 0.4);
+        }
+        
+        .add-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .add-btn .icon {
+            margin-right: 8px;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .footer-heart {
+            color: #e74c3c;
+        }
+        
+        /* Coming Soon Card */
+        .coming-soon {
+            opacity: 0.6;
+            border: 2px dashed rgba(255,255,255,0.2);
+        }
+        
+        .coming-soon .add-btn {
+            background: rgba(255,255,255,0.1);
+            color: #888;
+            box-shadow: none;
+        }
+        
+        /* Instructions */
+        .instructions {
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .instructions h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            color: #00f5d4;
+        }
+        
+        .instructions p {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #b0b0b0;
+        }
+        
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+            color: #d0d0d0;
+            font-size: 13px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .instructions strong {
+            color: #00f5d4;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="store-icon">📱</div>
+        <h1>Ethan's App Store</h1>
+        <p>Made with ❤️</p>
+    </div>
+    
+    <div class="instructions">
+        <h3>📲 How to Add Apps</h3>
+        <ol>
+            <li>Tap <strong>"ADD"</strong> on any app below</li>
+            <li>The app will open in your browser</li>
+            <li><strong>iPhone:</strong> Tap the Share button 📤 then "Add to Home Screen"</li>
+            <li><strong>Android:</strong> Tap "Install" or the browser's menu button</li>
+        </ol>
+    </div>
+    
+    <div class="app-list">
+        <div class="section-title">📍 Your Apps</div>
+        
+        <!-- Time in the Past -->
+        <div class="app-card">
+            <div class="app-header">
+                <div class="app-icon placeholder">🏠</div>
+                <div class="app-info">
+                    <div class="app-name">Time in the Past</div>
+                    <div class="app-dev">by Developer</div>
+                    <div class="app-rating">⭐ AR App</div>
+                </div>
+            </div>
+            <img src="https://candid-stardust-ea8f73.netlify.app/images/john_ave_old1.jpg" class="app-screenshot" alt="Time in the Past">
+            <div class="app-desc">
+                See what places looked like in the past! Walk around with your camera and discover historical photos overlaid on the real world. Uses GPS and AR technology!
+            </div>
+            <div class="app-features">
+                <span class="feature-tag">📍 GPS Location</span>
+                <span class="feature-tag">👓 AR Camera</span>
+                <span class="feature-tag">📸 Historical Photos</span>
+                <span class="feature-tag">🏠 Your House</span>
+            </div>
+            <button class="add-btn" onclick="window.open('https://candid-stardust-ea8f73.netlify.app/ar-location.html', '_blank')">
+                <span class="icon">➕</span> ADD TO HOME SCREEN
+            </button>
+        </div>
+        
+        <!-- Cool Games 64 -->
+        <div class="app-card">
+            <div class="app-header">
+                <div class="app-icon placeholder">🎮</div>
+                <div class="app-info">
+                    <div class="app-name">Cool Games 64</div>
+                    <div class="app-dev">by Developer</div>
+                    <div class="app-rating">⭐ 70+ Free Games</div>
+                </div>
+            </div>
+            <img src="https://coolgames6x.com/images/logo.png" class="app-screenshot" alt="Cool Games 64" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 180%22><rect fill=%22%23667eea%22 width=%22400%22 height=%22180%22/><text x=%22200%22 y=%22100%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2224%22>🎮 Cool Games 64</text></svg>'">
+            <div class="app-desc">
+                Play 70+ free online games! Including racing, puzzles, action games, and more. All optimized for mobile with touch controls!
+            </div>
+            <div class="app-features">
+                <span class="feature-tag">🎮 70+ Games</span>
+                <span class="feature-tag">📱 Mobile Ready</span>
+                <span class="feature-tag">🎯 Touch Controls</span>
+                <span class="feature-tag">🆓 100% Free</span>
+            </div>
+            <button class="add-btn" onclick="window.open('https://coolgames6x.com/', '_blank')">
+                <span class="icon">➕</span> ADD TO HOME SCREEN
+            </button>
+        </div>
+        
+        <div class="section-title">🚀 Coming Soon</div>
+        
+        <!-- More Apps Placeholder -->
+        <div class="app-card coming-soon">
+            <div class="app-header">
+                <div class="app-icon placeholder">❓</div>
+                <div class="app-info">
+                    <div class="app-name">Your Next App</div>
+                    <div class="app-dev">Coming soon...</div>
+                    <div class="app-rating">⭐ Be the first!</div>
+                </div>
+            </div>
+            <div class="app-desc">
+                Got an idea for an app? Tell the developer and it might be built!
+            </div>
+            <button class="add-btn">
+                <span class="icon">⏳</span> COMING SOON
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>Made with <span class="footer-heart">❤️</span></p>
+        <p style="margin-top: 5px;">Future App Developer 🚀</p>
+    </div>
+</body>
+</html>
